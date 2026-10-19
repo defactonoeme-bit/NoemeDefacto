@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Welcome to my first API!"
+    return "Welcome to my first API! Noeme Defacto"
 
 
 @app.route('/student')
