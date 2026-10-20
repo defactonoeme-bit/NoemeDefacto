@@ -327,6 +327,65 @@
 
 
         /* ==========================================
+           DATABASE STUDENTS
+           ========================================== */
+
+        #databaseStudents {
+            margin-top: 25px;
+        }
+
+
+        #studentList {
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #f7fbff;
+
+            border-left:
+                5px solid #1976d2;
+
+            border-radius: 10px;
+
+            min-height: 50px;
+        }
+
+
+        .student-item {
+            margin: 10px 0;
+
+            padding: 15px;
+
+            background: white;
+
+            border-radius: 8px;
+
+            border: 1px solid #e5e5e5;
+
+            box-shadow:
+                0 2px 5px
+                rgba(0, 0, 0, 0.05);
+        }
+
+
+        .student-item p {
+            margin: 8px 0;
+        }
+
+
+        .student-item b {
+            color: #0f4c81;
+        }
+
+
+        .database-error {
+            color: #c62828;
+
+            font-weight: 600;
+        }
+
+
+        /* ==========================================
            DIVIDER
            ========================================== */
 
@@ -586,15 +645,55 @@
 
 
         <!-- ==========================================
+             STUDENTS FROM SQLITE DATABASE
+             ========================================== -->
+
+        <div class="card" id="databaseStudents">
+
+            <h2>
+                🗄️ Students from Database
+            </h2>
+
+
+            <p class="card-description">
+
+                These student records are retrieved
+                directly from the SQLite database
+                through the Flask API.
+
+            </p>
+
+
+            <button onclick="loadStudents()">
+
+                📋 Load Students from Database
+
+            </button>
+
+
+            <div id="studentList">
+
+                Student records will appear here.
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
              FOOTER
              ========================================== -->
 
         <div class="footer">
 
             <p>
+
                 Student API Interface
                 |
                 Flask + JavaScript Fetch API
+                |
+                SQLite Database
+
             </p>
 
         </div>
@@ -865,6 +964,112 @@
                     courseResult.innerHTML =
                         '<p class="error">' +
                         '❌ Unable to retrieve course information.' +
+                        '</p>';
+
+                    console.error(error);
+
+                });
+
+        }
+
+
+
+        /* ==========================================
+           STUDENTS FROM SQLITE DATABASE
+           ========================================== */
+
+        function loadStudents() {
+
+            const studentList =
+                document.getElementById('studentList');
+
+
+            studentList.innerHTML =
+                '<p class="loading">' +
+                '⏳ Loading students from database...' +
+                '</p>';
+
+
+            fetch('/students')
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to retrieve student records.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    let output = '';
+
+
+                    if (data.length === 0) {
+
+                        output =
+                            '<p>No student records found.</p>';
+
+                    }
+
+                    else {
+
+                        data.forEach(student => {
+
+                            output +=
+
+                                '<div class="student-item">' +
+
+                                '<p>' +
+                                '<b>🆔 Student ID:</b> ' +
+                                student.student_id +
+                                '</p>' +
+
+                                '<p>' +
+                                '<b>👤 Name:</b> ' +
+                                student.name +
+                                '</p>' +
+
+                                '<p>' +
+                                '<b>💻 Program:</b> ' +
+                                student.program +
+                                '</p>' +
+
+                                '<p>' +
+                                '<b>📅 Year:</b> ' +
+                                student.year +
+                                '</p>' +
+
+                                '<p>' +
+                                '<b>📖 Section:</b> ' +
+                                student.section +
+                                '</p>' +
+
+                                '</div>';
+
+                        });
+
+                    }
+
+
+                    studentList.innerHTML = output;
+
+                })
+
+
+                .catch(error => {
+
+                    studentList.innerHTML =
+                        '<p class="database-error">' +
+                        '❌ Unable to retrieve student records.' +
                         '</p>';
 
                     console.error(error);
