@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student API Interface</title>
+
+
+    <style>
+
+        /* ==========================================
+           GENERAL
+           ========================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            margin: 0;
+            padding: 0;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f4c81,
+                    #1976d2,
+                    #64b5f6
+                );
+
+            color: #333;
+        }
+
+
+        .container {
+            max-width: 900px;
+
+            margin: 40px auto;
+
+            padding: 20px;
+        }
+
+
+        /* ==========================================
+           HEADER
+           ========================================== */
+
+        .header {
+            background: rgba(255, 255, 255, 0.97);
+
+            padding: 35px 25px;
+
+            border-radius: 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.15);
+
+            margin-bottom: 25px;
+        }
+
+
+        .header-icon {
+            font-size: 50px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .header h1 {
+            margin: 0;
+
+            color: #0f4c81;
+
+            font-size: 34px;
+        }
+
+
+        .header p {
+            margin: 10px 0 0;
+
+            color: #666;
+
+            font-size: 15px;
+        }
+
+
+        /* ==========================================
+           CARDS
+           ========================================== */
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.12);
+        }
+
+
+        .card h2 {
+            margin-top: 0;
+
+            color: #0f4c81;
+
+            font-size: 24px;
+        }
+
+
+        .card-description {
+            color: #777;
+
+            margin-bottom: 20px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+
+        button {
+            padding: 12px 20px;
+
+            margin-top: 10px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f4c81,
+                    #1976d2
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+            box-shadow:
+                0 4px 10px
+                rgba(15, 76, 129, 0.25);
+        }
+
+
+        button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 15px
+                rgba(15, 76, 129, 0.35);
+        }
+
+
+        button:active {
+            transform: translateY(0);
+        }
+
+
+        /* ==========================================
+           STUDENT RESULT
+           ========================================== */
+
+        #result {
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #f7fbff;
+
+            border-left:
+                5px solid #1976d2;
+
+            border-radius: 10px;
+
+            min-height: 50px;
+        }
+
+
+        #result p {
+            margin: 10px 0;
+
+            padding: 12px;
+
+            background: white;
+
+            border-radius: 7px;
+
+            border: 1px solid #e5e5e5;
+        }
+
+
+        #result b {
+            color: #0f4c81;
+        }
+
+
+        /* ==========================================
+           GREETING
+           ========================================== */
+
+        .input-group {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            align-items: center;
+        }
+
+
+        input {
+            flex: 1;
+
+            min-width: 220px;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid #ccc;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+
+        input:focus {
+            border-color: #1976d2;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25, 118, 210, 0.12);
+        }
+
+
+        #greeting {
+            margin-top: 20px;
+
+            padding: 15px 20px;
+
+            background: #e8f5e9;
+
+            border-left:
+                5px solid #43a047;
+
+            border-radius: 10px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #2e7d32;
+
+            min-height: 25px;
+        }
+
+
+        /* ==========================================
+           COURSE API
+           ========================================== */
+
+        #courseResult {
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fffaf0;
+
+            border-left:
+                5px solid #f59e0b;
+
+            border-radius: 10px;
+
+            min-height: 50px;
+        }
+
+
+        #courseResult p {
+            margin: 10px 0;
+
+            padding: 12px;
+
+            background: white;
+
+            border-radius: 7px;
+
+            border: 1px solid #e5e5e5;
+        }
+
+
+        #courseResult b {
+            color: #b45309;
+        }
+
+
+        /* ==========================================
+           DIVIDER
+           ========================================== */
+
+        hr {
+            border: none;
+
+            border-top:
+                1px solid #ddd;
+
+            margin: 30px 0;
+        }
+
+
+        /* ==========================================
+           LOADING
+           ========================================== */
+
+        .loading {
+            color: #1976d2;
+
+            font-style: italic;
+
+            font-weight: 500;
+        }
+
+
+        /* ==========================================
+           ERROR
+           ========================================== */
+
+        .error {
+            color: #c62828;
+
+            font-weight: 600;
+        }
+
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+
+        .footer {
+            text-align: center;
+
+            color: white;
+
+            font-size: 13px;
+
+            margin-top: 20px;
+
+            padding-bottom: 20px;
+
+            opacity: 0.9;
+        }
+
+
+        /* ==========================================
+           MOBILE RESPONSIVE
+           ========================================== */
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 20px auto;
+
+                padding: 12px;
+            }
+
+
+            .header {
+                padding: 25px 18px;
+            }
+
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+
+            .header-icon {
+                font-size: 40px;
+            }
+
+
+            .card {
+                padding: 20px;
+            }
+
+
+            .card h2 {
+                font-size: 21px;
+            }
+
+
+            .input-group {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            input {
+                width: 100%;
+
+                min-width: 100%;
+            }
+
+
+            button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <!-- ==========================================
+             HEADER
+             ========================================== -->
+
+        <div class="header">
+
+            <div class="header-icon">
+                🎓
+            </div>
+
+            <h1>
+                Student API Interface
+            </h1>
+
+            <p>
+                Flask API Web Application
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             STUDENT INFORMATION
+             ========================================== -->
+
+        <div class="card">
+
+            <h2>
+                📚 Student Information
+            </h2>
+
+            <p class="card-description">
+
+                Click the button below to retrieve
+                student information from the Flask API.
+
+            </p>
+
+
+            <button onclick="loadStudent()">
+
+                🔍 Load Student Information
+
+            </button>
+
+
+            <div id="result">
+
+                Student information will appear here.
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             GREETING API
+             ========================================== -->
+
+        <div class="card">
+
+            <h2>
+                👋 Greeting API
+            </h2>
+
+
+            <p class="card-description">
+
+                Enter your first name and let the API
+                generate a personalized greeting.
+
+            </p>
+
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="nameInput"
+                    placeholder="Enter your first name"
+                >
+
+
+                <button onclick="sayHello()">
+
+                    💬 Say Hello
+
+                </button>
+
+            </div>
+
+
+            <p id="greeting"></p>
+
+        </div>
+
+
+        <!-- ==========================================
+             CUSTOM COURSE API
+             ========================================== -->
+
+        <div class="card">
+
+            <h2>
+                📖 Course Information
+            </h2>
+
+
+            <p class="card-description">
+
+                This section uses my custom
+                <strong>/course</strong> API endpoint
+                created for Laboratory Activity 4.
+
+            </p>
+
+
+            <button onclick="loadCourse()">
+
+                📚 Load Course Information
+
+            </button>
+
+
+            <div id="courseResult">
+
+                Course information will appear here.
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             FOOTER
+             ========================================== -->
+
+        <div class="footer">
+
+            <p>
+                Student API Interface
+                |
+                Flask + JavaScript Fetch API
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+
+    <script>
+
+
+        /* ==========================================
+           STUDENT API
+           ========================================== */
+
+        function loadStudent() {
+
+            const result =
+                document.getElementById('result');
+
+
+            result.innerHTML =
+                '<p class="loading">' +
+                '⏳ Loading student information...' +
+                '</p>';
+
+
+            fetch('/student')
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to retrieve student data.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    result.innerHTML =
+
+                        '<p>' +
+                        '<b>🆔 Student ID:</b> ' +
+                        data.student_id +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>👤 Name:</b> ' +
+                        data.name +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>💻 Program:</b> ' +
+                        data.program +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>📅 Year:</b> ' +
+                        data.year +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>📖 Section:</b> ' +
+                        data.section +
+                        '</p>';
+
+                })
+
+
+                .catch(error => {
+
+                    result.innerHTML =
+                        '<p class="error">' +
+                        '❌ Unable to retrieve student data.' +
+                        '</p>';
+
+                    console.error(error);
+
+                });
+
+        }
+
+
+
+        /* ==========================================
+           GREETING API
+           ========================================== */
+
+        function sayHello() {
+
+            const name =
+                document
+                .getElementById('nameInput')
+                .value
+                .trim();
+
+
+            const greeting =
+                document.getElementById('greeting');
+
+
+            if (name === '') {
+
+                greeting.innerText =
+                    '⚠️ Please enter your first name.';
+
+
+                greeting.style.backgroundColor =
+                    '#fff3e0';
+
+                greeting.style.borderLeftColor =
+                    '#fb8c00';
+
+                greeting.style.color =
+                    '#e65100';
+
+                return;
+
+            }
+
+
+            greeting.innerText =
+                '⏳ Getting your greeting...';
+
+
+            greeting.style.backgroundColor =
+                '#e3f2fd';
+
+            greeting.style.borderLeftColor =
+                '#1976d2';
+
+            greeting.style.color =
+                '#0d47a1';
+
+
+            fetch(
+                '/hello?name=' +
+                encodeURIComponent(name)
+            )
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to retrieve greeting.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    greeting.innerText =
+                        '🎉 ' + data.message;
+
+
+                    greeting.style.backgroundColor =
+                        '#e8f5e9';
+
+                    greeting.style.borderLeftColor =
+                        '#43a047';
+
+                    greeting.style.color =
+                        '#2e7d32';
+
+                })
+
+
+                .catch(error => {
+
+                    greeting.innerText =
+                        '❌ Unable to retrieve greeting.';
+
+
+                    greeting.style.backgroundColor =
+                        '#ffebee';
+
+                    greeting.style.borderLeftColor =
+                        '#e53935';
+
+                    greeting.style.color =
+                        '#c62828';
+
+                    console.error(error);
+
+                });
+
+        }
+
+
+
+        /* ==========================================
+           CUSTOM COURSE API
+           ========================================== */
+
+        function loadCourse() {
+
+            const courseResult =
+                document.getElementById('courseResult');
+
+
+            courseResult.innerHTML =
+                '<p class="loading">' +
+                '⏳ Loading course information...' +
+                '</p>';
+
+
+            fetch('/course')
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to retrieve course data.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    courseResult.innerHTML =
+
+                        '<p>' +
+                        '<b>📘 Course Code:</b> ' +
+                        data.course_code +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>📚 Course Title:</b> ' +
+                        data.course_title +
+                        '</p>' +
+
+                        '<p>' +
+                        '<b>👨‍🏫 Instructor:</b> ' +
+                        data.instructor +
+                        '</p>';
+
+                })
+
+
+                .catch(error => {
+
+                    courseResult.innerHTML =
+                        '<p class="error">' +
+                        '❌ Unable to retrieve course information.' +
+                        '</p>';
+
+                    console.error(error);
+
+                });
+
+        }
+
+
+
+        /* ==========================================
+           ENTER KEY SUPPORT
+           ========================================== */
+
+        document
+            .getElementById('nameInput')
+            .addEventListener(
+                'keypress',
+                function(event) {
+
+                    if (event.key === 'Enter') {
+
+                        sayHello();
+
+                    }
+
+                }
+            );
+
+
+    </script>
+
+
+</body>
+
+</html>
